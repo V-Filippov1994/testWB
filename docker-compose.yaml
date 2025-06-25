@@ -1,0 +1,44 @@
+version: '3.10'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: django-backend-wb
+    volumes:
+      - ./backend:/backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - db
+
+  react:
+    container_name: front_react
+    restart: always
+    build:
+      context: .
+      dockerfile: ./react/Dockerfile
+    environment:
+      - WDS_SOCKET_PORT=0
+    volumes:
+      - ./react:/react
+      - /react/node_modules
+    ports:
+      - "3001:3000"
+    expose:
+      - 3001
+  db:
+    image: postgres:15
+    container_name: postgres-db
+    env_file:
+      - ./backend/.env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  pgdata:
