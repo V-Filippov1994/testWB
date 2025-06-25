@@ -2,6 +2,7 @@
 
 - docker-compose build
 - docker-compose run --rm backend python manage.py migrate
+- docker-compose up
 
 Пояснение по реализации
 - Сделано 3 сервиса: бекэнд, фронтэнд, бд
